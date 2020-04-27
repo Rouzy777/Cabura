@@ -104,16 +104,12 @@ export default {
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
                         this.loadLastGame();
-                        // od.update(this.$store.state.score);
-                        // od2.update(this.$store.state.score);
                         Cookies.set('score', this.$store.state.score, { expires: 7 });
                         this.$store.commit('updateScore', this.$store.state.score);
                     } else {
                         this.fail = true;
                         this.lastNum = num;
                         this.loadLastGame();
-                        // od.update(this.$store.state.score);
-                        // od2.update(this.$store.state.score);
                         Cookies.set('score', this.$store.state.score, { expires: 7 });
                         this.$store.commit('updateScore', this.$store.state.score);
                     }
@@ -136,8 +132,6 @@ export default {
                     if(num >= Number(this.maxValue)) {
                         this.$store.state.score += Number(this.successValue);
                         this.$store.state.score = (this.$store.state.score).toFixed(2);
-                        // od.update(this.$store.state.score);
-                        // od2.update(this.$store.state.score);
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
                         this.loadLastGame();
@@ -147,8 +141,6 @@ export default {
                         this.fail = true;
                         this.lastNum = num;
                         this.loadLastGame();
-                        // od.update(this.$store.state.score);
-                        // od2.update(this.$store.state.score);
                         Cookies.set('score', this.$store.state.score, { expires: 7 });
                         this.$store.commit('updateScore', this.$store.state.score);
                     }

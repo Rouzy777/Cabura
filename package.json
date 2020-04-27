@@ -15,6 +15,7 @@
     "odometer": "^0.4.8",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
+    "vue-odometer": "^1.0.2",
     "vuex": "^3.3.0"
   },
   "devDependencies": {

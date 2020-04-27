@@ -30,7 +30,7 @@
                                 <small class="text-muted">{{user}}</small>
                             </div>
                             <div>
-                                <h5 class='odometer'>{{$store.state.score}}</h5>
+                                <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
                             </div>
                         </div>
                         <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4'>
@@ -57,7 +57,7 @@
                         <small class="text-muted">{{user}}</small>
                     </div>
                     <div>
-                        <h5 class='odometer'>{{$store.state.score}}</h5>
+                        <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
                     </div>
                 </div>
                 <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4'>
@@ -71,11 +71,13 @@
 <script>
 import MoneyModal from './navComponents/AddMoney'
 import Cookies from 'js-cookie'
+import IOdometer from 'vue-odometer'
+import 'odometer/themes/odometer-theme-default.css'
 
 export default {
     name: 'Navbar',
     components: {
-        MoneyModal
+        MoneyModal, IOdometer
     },
     data() {
         return {
@@ -85,8 +87,6 @@ export default {
     methods: {
         getNumber(num) {
             this.$store.state.score = Number(num) + Number(this.$store.state.score);
-            // od.update(this.score);
-            // od2.update(this.score);
             Cookies.set('score', this.$store.state.score, { expires: 7 });
         }
     }
