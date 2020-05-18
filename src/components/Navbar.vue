@@ -5,21 +5,17 @@
                 <a class="navbar-brand font-weight-bold" href="#">Cabura</a>
                 <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                        <li class="nav-item active">
-                            <a class="nav-link smallerFSize" href="#">Главная</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link smallerFSize" href="#">Как играть</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link smallerFSize" href="#">FAQ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link smallerFSize" href="#">Рефералы</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link smallerFSize" href="#">Бонусы</a>
-                        </li>
+                        <router-link
+                            v-for='item in links'
+                            :key='item.title'
+                            tag="li"
+                            class="nav-item"
+                            active-class="active"
+                            :to="item.link"
+                            exact
+                        >
+                            <a class="nav-link smallerFSize">{{item.title}}</a>
+                        </router-link>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
                         <div class="special-round mr-2 text-center">
@@ -76,12 +72,19 @@ import 'odometer/themes/odometer-theme-default.css'
 
 export default {
     name: 'Navbar',
+    props: {
+        activePage: String
+    },
     components: {
         MoneyModal, IOdometer
     },
     data() {
         return {
-            user: this.$store.state.user //никнейм
+            user: this.$store.state.user, //никнейм
+            links: [
+                {title: "Играть", link: "/"},
+                {title: "Статистика", link: "/stats"}
+            ]
         }
     },
     methods: {

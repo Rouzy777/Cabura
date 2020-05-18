@@ -1,23 +1,9 @@
 <template>
     <div id="app">
-        <Navbar/>
-        <Main/>
+        <router-view/>
     </div>
 </template>
 
-<script>
-import Navbar from './components/Navbar'
-import Main from './components/Main'
-
-export default {
-    name: 'App',
-    components: {
-        Navbar, Main
-    }
-}
-</script>
-
 <style>
 @import './assets/style.css';
-
 </style>
