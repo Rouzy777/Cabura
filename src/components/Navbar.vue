@@ -17,19 +17,19 @@
                             <a class="nav-link smallerFSize">{{item.title}}</a>
                         </router-link>
                     </ul>
-                    <form class="form-inline my-2 my-lg-0">
+                    <div class="form-inline my-2 my-lg-0">
                         <div class="special-round mr-2 text-center">
                             <h6 class="text-light font-weight-bold">RO</h6>
                         </div>
                         <div class="d-flex flex-column">
                             <div>
-                                <small class="text-muted">{{user}}</small>
+                                <small class="text-muted">{{name}}</small>
                             </div>
                             <div>
                                 <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
                             </div>
                         </div>
-                        <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4'>
+                        <svg data-toggle="modal" data-target="#settings" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4 pointer'>
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
                         <!--div class="btn btn-special px-3 btn-nav">
@@ -38,10 +38,25 @@
                         <div data-toggle="modal" data-target="#addMoney" class="btn bg-primary2 px-3 btn-nav">
                             <small class='text-light'>ПОПОЛНИТЬ</small>
                         </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </nav>
+        <div class="modal fade" id="settings" tabindex="-1" role="dialog">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header border-bottom">
+                        <h5 class="modal-title">Настройки</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <button @click='logout' data-dismiss="modal" class='col-12 btn btn-primary'>Выйти из аккаунта</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <MoneyModal @clicked='getNumber'/>
         <div class='d-lg-none d-flex w-100 border-bottom px-3 bg-white'>
             <div class="container px-0 form-inline">
@@ -50,7 +65,7 @@
                 </div>
                 <div class="ml-2 d-flex flex-column">
                     <div>
-                        <small class="text-muted">{{user}}</small>
+                        <small class="text-muted">{{name}}</small>
                     </div>
                     <div>
                         <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
@@ -80,17 +95,30 @@ export default {
     },
     data() {
         return {
-            user: this.$store.state.user, //никнейм
             links: [
                 {title: "Играть", link: "/"},
                 {title: "Статистика", link: "/stats"}
             ]
         }
     },
+    async mounted() {
+        if(!Object.keys(this.$store.getters.info).length) {
+            await this.$store.dispatch('fetchInfo')
+        }
+    },
+    computed: {
+        name() {
+            return this.$store.getters.info.name
+        }
+    },
     methods: {
         getNumber(num) {
             this.$store.state.score = Number(num) + Number(this.$store.state.score);
             Cookies.set('score', this.$store.state.score, { expires: 7 });
+        },
+        async logout() {
+            this.$router.push('/signin?message=logout');
+            await this.$store.dispatch('logout')
         }
     }
 }

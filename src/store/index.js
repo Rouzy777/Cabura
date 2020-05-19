@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import Cookies from 'js-cookie'
+import auth from './auth'
+import info from './info'
 
 Vue.use(Vuex)
 
@@ -9,7 +11,7 @@ export default new Vuex.Store({
         score: Cookies.get('score') != undefined ? Cookies.get('score') : 1, //генерация начального счета
         sum: 1, //сумма в инпуте
         chance: 80, //шанс в инпуте
-        user: "Rouzy" //никнейм
+        error: null
     },
     mutations: {
         updateSum(state, newSum) {
@@ -20,6 +22,18 @@ export default new Vuex.Store({
         },
         updateScore(state, newScore) {
             state.score = Number(newScore)
+        },
+        setError(state, error) {
+            state.error = error
+        },
+        clearError(state) {
+            state.error = null
         }
+    },
+    getters: {
+        error: s => s.error
+    },
+    modules: {
+        auth, info
     }
 })
