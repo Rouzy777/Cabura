@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Cookies from 'js-cookie'
 import auth from './auth'
 import info from './info'
+import play from './play'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        score: Cookies.get('score') != undefined ? Cookies.get('score') : 1, //генерация начального счета
+        score: 1, //генерация начального счета
         sum: 1, //сумма в инпуте
         chance: 80, //шанс в инпуте
         error: null
@@ -34,6 +34,6 @@ export default new Vuex.Store({
         error: s => s.error
     },
     modules: {
-        auth, info
+        auth, info, play
     }
 })

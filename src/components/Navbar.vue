@@ -1,6 +1,6 @@
 <template>
     <header>
-        <nav class="navbar pb-0 sticky-top bg-white border-bottom navbar-expand-lg navbar-light">
+        <nav class="navbar py-0 sticky-top bg-white border-bottom navbar-expand-lg navbar-light">
             <div class="container">
                 <a class="navbar-brand font-weight-bold" href="#">Cabura</a>
                 <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
@@ -19,11 +19,11 @@
                     </ul>
                     <div class="form-inline my-2 my-lg-0">
                         <div class="special-round mr-2 text-center">
-                            <h6 class="text-light font-weight-bold">RO</h6>
+                            <h6 class="text-light font-weight-bold">{{avatarName}}</h6>
                         </div>
                         <div class="d-flex flex-column">
                             <div>
-                                <small class="text-muted">{{name}}</small>
+                                <small class="text-muted">{{nickname}}</small>
                             </div>
                             <div>
                                 <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
@@ -65,7 +65,7 @@
                 </div>
                 <div class="ml-2 d-flex flex-column">
                     <div>
-                        <small class="text-muted">{{name}}</small>
+                        <small class="text-muted">{{nickname}}</small>
                     </div>
                     <div>
                         <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
@@ -81,40 +81,39 @@
 
 <script>
 import MoneyModal from './navComponents/AddMoney'
-import Cookies from 'js-cookie'
 import IOdometer from 'vue-odometer'
 import 'odometer/themes/odometer-theme-default.css'
 
 export default {
     name: 'Navbar',
     props: {
-        activePage: String
+        activePage: String,
+        nickname: String
     },
     components: {
         MoneyModal, IOdometer
     },
-    data() {
-        return {
-            links: [
-                {title: "Играть", link: "/"},
-                {title: "Статистика", link: "/stats"}
-            ]
-        }
-    },
-    async mounted() {
-        if(!Object.keys(this.$store.getters.info).length) {
-            await this.$store.dispatch('fetchInfo')
-        }
-    },
+    data: () => ({
+        links: [
+            {title: "Играть", link: "/"},
+            {title: "Статистика", link: "/stats"}
+        ]
+    }),
     computed: {
-        name() {
-            return this.$store.getters.info.name
+        avatarName() {
+            return this.nickname.slice(0, 2).toUpperCase();
         }
     },
     methods: {
-        getNumber(num) {
+        async getNumber(num) {
             this.$store.state.score = Number(num) + Number(this.$store.state.score);
-            Cookies.set('score', this.$store.state.score, { expires: 7 });
+            try {
+                await this.$store.dispatch('updateBill', {
+                    bill: this.$store.state.score
+                })
+            } catch(e) {
+                //continue regardless of error
+            }
         },
         async logout() {
             this.$router.push('/signin?message=logout');

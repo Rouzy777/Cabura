@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import Cookies from 'js-cookie'
 import Inputs from './mainComponents/Inputs'
 import History from './mainComponents/History'
 
@@ -80,7 +79,7 @@ export default {
         },
         loadLastGame() {
             this.lastGames.unshift({
-                user: this.$store.state.user,
+                user: this.$store.getters.info.name,
                 sum: this.$store.state.sum,
                 coef: "x"+(this.successValue / this.$store.state.sum).toFixed(2),
                 result: this.fail ? 0 : this.lastSuccessValue,
@@ -89,7 +88,7 @@ export default {
             });
             this.lastGames.pop();
         },
-        playSmaller: function() { //игра "меньше"
+        async playSmaller() { //игра "меньше"
             this.oneruble = false;
             this.money = false;
             this.fail = false;
@@ -99,19 +98,28 @@ export default {
                     var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
                     this.$store.state.score -= this.$store.state.sum;
                     if(num <= Number(this.minValue)) {
-                        this.$store.state.score += Number(this.successValue);
-                        this.$store.state.score = (this.$store.state.score).toFixed(2);
-                        this.success = true;
+                        Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
+                        this.success = await true;
                         this.lastSuccessValue = this.successValue;
                         this.loadLastGame();
-                        Cookies.set('score', this.$store.state.score, { expires: 7 });
-                        this.$store.commit('updateScore', this.$store.state.score);
+                        try {
+                            await this.$store.dispatch('updateBill', {
+                                bill: this.$store.state.score
+                            })
+                        } catch(e) {
+                            //continue regardless of error
+                        }
                     } else {
                         this.fail = true;
                         this.lastNum = num;
                         this.loadLastGame();
-                        Cookies.set('score', this.$store.state.score, { expires: 7 });
-                        this.$store.commit('updateScore', this.$store.state.score);
+                        try {
+                            await this.$store.dispatch('updateBill', {
+                                bill: this.$store.state.score
+                            })
+                        } catch(e) {
+                            //continue regardless of error
+                        }
                     }
                 } else {
                     this.oneruble = true;
@@ -120,7 +128,7 @@ export default {
                 this.money = true;
             }
         },
-        playBigger: function() { //игра "больше"
+        async playBigger() { //игра "больше"
             this.oneruble = false;
             this.money = false;
             this.fail = false;
@@ -130,19 +138,28 @@ export default {
                     var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
                     this.$store.state.score -= this.$store.state.sum;
                     if(num >= Number(this.maxValue)) {
-                        this.$store.state.score += Number(this.successValue);
-                        this.$store.state.score = (this.$store.state.score).toFixed(2);
+                        Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
                         this.loadLastGame();
-                        Cookies.set('score', this.$store.state.score, { expires: 7 });
-                        this.$store.commit('updateScore', this.$store.state.score);
+                        try {
+                            await this.$store.dispatch('updateBill', {
+                                bill: this.$store.state.score
+                            })
+                        } catch(e) {
+                            //continue regardless of error
+                        }
                     } else {
                         this.fail = true;
                         this.lastNum = num;
                         this.loadLastGame();
-                        Cookies.set('score', this.$store.state.score, { expires: 7 });
-                        this.$store.commit('updateScore', this.$store.state.score);
+                        try {
+                            await this.$store.dispatch('updateBill', {
+                                bill: this.$store.state.score
+                            })
+                        } catch(e) {
+                            //continue regardless of error
+                        }
                     }
                 } else {
                     this.oneruble = true;

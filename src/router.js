@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import firebase from 'firebase/app'
 import Router from 'vue-router'
 import Dicer from '@/views/Dicer'
 import Stats from '@/views/Stats'
@@ -8,15 +9,17 @@ import NotFound from '@/views/NotFound'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
     mode: 'history',
     routes: [
         {
             path: '/',
+            meta: {auth: true},
             component: Dicer
         },
         {
             path: '/stats',
+            meta: {auth: true},
             component: Stats
         },
         {
@@ -33,3 +36,16 @@ export default new Router({
         }
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    const currentUser = firebase.auth().currentUser
+    const requireAuth = to.matched.some(record => record.meta.auth)
+
+    if(requireAuth && !currentUser) {
+        next('/signin?message=login')
+    } else {
+        next()
+    }
+})
+
+export default router

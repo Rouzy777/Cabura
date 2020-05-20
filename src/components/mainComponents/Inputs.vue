@@ -28,8 +28,8 @@ export default {
     name: "ChanceInput",
     data() {
         return {
-            sum: 1, //начальная сумма в инпуте
-            chance: 80 //начальный шанс в инпуте
+            sum: this.$store.state.sum, //начальная сумма в инпуте
+            chance: this.$store.state.chance //начальный шанс в инпуте
         }
     },
     watch: {

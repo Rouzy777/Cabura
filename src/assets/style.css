@@ -29,6 +29,10 @@
     cursor: pointer;
 }
 
+.spinner-border {
+    border-width: .15em !important;
+}
+
 .list-price div .col-lg {
     cursor: pointer;
     padding: 10px;
