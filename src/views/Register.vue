@@ -48,6 +48,11 @@ export default {
             agree: false
         }
     },
+    metaInfo() {
+        return {
+            title: this.$title('Sign out')
+        }
+    },
     validations: {
         email: {
             email, required

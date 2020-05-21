@@ -8,7 +8,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        score: 1, //генерация начального счета
+        score: null, //генерация начального счета
         sum: 1, //сумма в инпуте
         chance: 80, //шанс в инпуте
         error: null

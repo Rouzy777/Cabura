@@ -16,6 +16,7 @@
     "odometer": "^0.4.8",
     "popper.js": "^1.16.1",
     "vue": "^2.6.11",
+    "vue-meta": "^2.3.3",
     "vue-odometer": "^1.0.2",
     "vue-router": "^3.1.6",
     "vuelidate": "^0.7.5",

@@ -18,6 +18,11 @@ export default {
     data: () => ({
         loading: true
     }),
+    metaInfo() {
+        return {
+            title: this.$title('Statistics')
+        }
+    },
     async mounted() {
         if(!Object.keys(this.$store.getters.info).length || Object.keys(this.$store.getters.info)) {
             await this.$store.dispatch('fetchInfo');

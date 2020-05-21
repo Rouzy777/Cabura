@@ -18,6 +18,11 @@ import Main from '@/components/Main'
 
 export default {
     name: 'Dicer',
+    metaInfo() {
+        return {
+            title: this.$title('Dicer')
+        }
+    },
     components: {
         Navbar, Main
     },
