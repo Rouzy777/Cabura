@@ -1,4 +1,6 @@
-# upwin
+# UpWin
+
+![UpWin](src/demo/demo.png?raw=true "Screenshot")
 
 ## Project setup
 ```
