@@ -1,4 +1,4 @@
-# dicer-vue
+# upwin
 
 ## Project setup
 ```
