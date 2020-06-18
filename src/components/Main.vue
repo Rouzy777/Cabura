@@ -20,17 +20,13 @@
                                 <button @click='playBigger' class='btn smallerFSize font-weight-light mt-2 btn-secondary col-12 py-2'>Больше</button>
                             </div>
                         </div>
-                        <div v-show='success' class="bg-success2 py-special rounded justify-content-center mt-3 mx-auto">
-                            <h6 class='text-light py-1 smallerFSize font-weight-light mb-0'>Выиграли {{ lastSuccessValue }}</h6>
-                        </div>
-                        <div v-show='fail' class="bg-danger py-special rounded justify-content-center mt-3 mx-auto">
-                            <h6 class='text-light py-1 smallerFSize font-weight-light mb-0'>Выпало {{ lastNum }}</h6>
-                        </div>
-                        <div v-show='money' class="bg-danger py-special rounded justify-content-center mt-3 mx-auto">
-                            <h6 class='text-light py-1 smallerFSize font-weight-light mb-0'>Недостаточно средств</h6>
-                        </div>
-                        <div v-show='oneruble' class="bg-danger py-special rounded justify-content-center mt-3 mx-auto">
-                            <h6 class='text-light py-1 smallerFSize font-weight-light mb-0'>Ставки от 1 рубля</h6>
+                        <div
+                            v-for='warning in warnings'
+                            :key='warning.message'
+                            :class='{"bg-success2": warning.greenColor, "bg-danger": !warning.greenColor}'
+                            class="py-special rounded justify-content-center mt-3 mx-auto"
+                        >
+                            <h6 class='text-light py-1 smallerFSize font-weight-light mb-0'>{{warning.message}}</h6>
                         </div>
                     </div>
                 </div>
@@ -58,8 +54,7 @@ export default {
             maxValue: 200000, //макс. разброс генерации числа в инпуте
             success: false, //уведомление о победе
             fail: false, //уведомление о проигрыше
-            money: false, //предупреждение о нехватке средств
-            oneruble: false, //предупреждение ставок от 1 рубля
+            warnings: [],
             lastGames: [
                 {},{},{},{},{},{},{},{},{},{},{},{},{},{}
             ]
@@ -88,19 +83,25 @@ export default {
             });
             this.lastGames.pop();
         },
-        async playSmaller() { //игра "меньше"
-            this.oneruble = false;
-            this.money = false;
+        emptyWarnings() {
             this.fail = false;
             this.success = false;
+            this.warnings = [];
+        },
+        async playSmaller() { //игра "меньше"
+            this.emptyWarnings();
             if(this.$store.state.sum <= this.$store.state.score ) {
                 if(this.$store.state.sum >= 1) {
                     var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
                     this.$store.state.score -= this.$store.state.sum;
                     if(num <= Number(this.minValue)) {
                         Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
-                        this.success = await true;
+                        this.success = true;
                         this.lastSuccessValue = this.successValue;
+                        this.warnings.push({
+                            message: `Выиграли ${this.lastSuccessValue}`,
+                            greenColor: true
+                        });
                         this.loadLastGame();
                         try {
                             await this.$store.dispatch('updateBill', {
@@ -112,6 +113,10 @@ export default {
                     } else {
                         this.fail = true;
                         this.lastNum = num;
+                        this.warnings.push({
+                            message: `Выпало ${this.lastNum}`,
+                            greenColor: false
+                        });
                         this.loadLastGame();
                         try {
                             await this.$store.dispatch('updateBill', {
@@ -122,17 +127,20 @@ export default {
                         }
                     }
                 } else {
-                    this.oneruble = true;
+                    this.warnings.push({
+                        message: 'Ставки от 1 рубля',
+                        greenColor: false
+                    });
                 }
             } else {
-                this.money = true;
+                this.warnings.push({
+                    message: 'Недостаточно средств',
+                    greenColor: false
+                });
             }
         },
         async playBigger() { //игра "больше"
-            this.oneruble = false;
-            this.money = false;
-            this.fail = false;
-            this.success = false;
+            this.emptyWarnings();
             if(this.$store.state.sum <= this.$store.state.score) {
                 if(this.$store.state.sum >= 1) {
                     var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
@@ -141,6 +149,10 @@ export default {
                         Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
+                        this.warnings.push({
+                            message: `Выиграли ${this.lastSuccessValue}`,
+                            greenColor: true
+                        });
                         this.loadLastGame();
                         try {
                             await this.$store.dispatch('updateBill', {
@@ -152,6 +164,10 @@ export default {
                     } else {
                         this.fail = true;
                         this.lastNum = num;
+                        this.warnings.push({
+                            message: `Выпало ${this.lastNum}`,
+                            greenColor: false
+                        });
                         this.loadLastGame();
                         try {
                             await this.$store.dispatch('updateBill', {
@@ -162,10 +178,16 @@ export default {
                         }
                     }
                 } else {
-                    this.oneruble = true;
+                    this.warnings.push({
+                        message: 'Ставки от 1 рубля',
+                        greenColor: false
+                    });
                 }
             } else {
-                this.money = true;
+                this.warnings.push({
+                    message: 'Недостаточно средств',
+                    greenColor: false
+                });
             }
         }
     }

@@ -23,7 +23,7 @@
                 <td>{{item.user}}</td>
                 <td>{{item.sum}}</td>
                 <td>{{item.coef}}</td>
-                <td v-bind:style="{ color: item.color }">{{item.result}}</td>
+                <td :style="{ color: item.color }">{{item.result}}</td>
             </tr>
             </tbody>
         </table>
