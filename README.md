@@ -1,5 +1,6 @@
 # UpWin
 
+#### Main page demo
 ![UpWin](src/demo/demo.png?raw=true "Screenshot")
 
 ## Project setup
