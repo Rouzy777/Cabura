@@ -31,7 +31,8 @@ export default new Vuex.Store({
         }
     },
     getters: {
-        error: s => s.error
+        error: s => s.error,
+        score: s => s.score
     },
     modules: {
         auth, info, play

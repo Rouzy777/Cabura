@@ -1,5 +1,5 @@
 <template>
-    <div class='min-vh-100 d-flex'>
+    <div class='d-flex min-vh-100'>
         <div class='col-lg-4 col-md-6 col-10 text-center m-auto p-4 bg-white rounded'>
             <h4>Вход</h4>
             <input
@@ -30,17 +30,10 @@ import messages from '@/utils/messages'
 
 export default {
     name: 'Login',
-    metaInfo() {
-        return {
-            title: this.$title('Sign in')
-        }
-    },
-    data() {
-        return {
-            email: '',
-            password: ''
-        }
-    },
+    data: () => ({
+        email: '',
+        password: ''
+    }),
     validations: {
         email: {
             email, required

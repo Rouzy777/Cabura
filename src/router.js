@@ -1,38 +1,38 @@
 import Vue from 'vue'
 import firebase from 'firebase/app'
 import Router from 'vue-router'
-import Dicer from '@/views/Dicer'
-import Stats from '@/views/Stats'
-import Login from '@/views/Login'
-import Register from '@/views/Register'
-import NotFound from '@/views/NotFound'
 
 Vue.use(Router)
 
 const router = new Router({
-    mode: 'history',
+    mode: 'hash',
     routes: [
         {
             path: '/',
+            name: 'Dicer',
             meta: {auth: true},
-            component: Dicer
+            component: () => import('@/views/Dicer')
         },
         {
             path: '/stats',
+            name: 'Статистика',
             meta: {auth: true},
-            component: Stats
+            component: () => import('@/views/Stats')
         },
         {
             path: '/signin',
-            component: Login
+            name: 'Вход',
+            component: () => import('@/views/Login')
         },
         {
             path: '/signup',
-            component: Register
+            name: 'Регистрация',
+            component: () => import('@/views/Register')
         },
         {
             path: "*",
-            component: NotFound
+            name: '404',
+            component: () => import('@/views/404')
         }
     ]
 })
