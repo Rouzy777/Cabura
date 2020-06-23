@@ -45,22 +45,19 @@ export default {
     components: {
         Inputs, History
     },
-    data: () =>  ({
-        successValue: 1.25, //шанс выигрыша
-        lastSuccessValue: 0, //последний выигрыш
-        lastNum: 0, //последнее выпавшее число
-        minValue: 799999, //мин. разброс генерации числа в инпуте
-        maxValue: 200000, //макс. разброс генерации числа в инпуте
-        success: false, //уведомление о победе
-        fail: false, //уведомление о проигрыше
-        warnings: [],
-        lastGames: [
-            {},{},{},{},{},{},{},{},{},{},{},{},{},{}
-        ]
-    }),
-    computed: {
-        score() {
-            return this.$store.getters.score
+    data() {
+        return {
+            successValue: 1.25, //шанс выигрыша
+            lastSuccessValue: 0, //последний выигрыш
+            lastNum: 0, //последнее выпавшее число
+            minValue: 799999, //мин. разброс генерации числа в инпуте
+            maxValue: 200000, //макс. разброс генерации числа в инпуте
+            success: false, //уведомление о победе
+            fail: false, //уведомление о проигрыше
+            warnings: [],
+            lastGames: [
+                {},{},{},{},{},{},{},{},{},{},{},{},{},{}
+            ]
         }
     },
     methods: {

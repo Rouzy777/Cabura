@@ -1,13 +1,8 @@
 <template>
-    <div v-if='!loading'>
+    <div>
         <Navbar :nickname='name' activePage='stats'/>
         <div class="container mt-4 text-center">
             <h4>В разработке...</h4>
-        </div>
-    </div>
-    <div v-else class='d-flex min-vh-100'>
-        <div class="m-auto">
-            <Loader size='5rem'/>
         </div>
     </div>
 </template>
@@ -23,19 +18,20 @@ export default {
     data: () => ({
         loading: true
     }),
+    metaInfo() {
+        return {
+            title: this.$title('Statistics')
+        }
+    },
     async mounted() {
         if(!Object.keys(this.$store.getters.info).length || Object.keys(this.$store.getters.info)) {
-            await this.$store.dispatch('fetchInfo')
-            this.$store.state.score = this.bill
+            await this.$store.dispatch('fetchInfo');
             this.loading = false;
         }
     },
     computed: {
         name() {
             return this.$store.getters.info.name
-        },
-        bill() {
-            return this.$store.getters.info.bill
         }
     }
 }

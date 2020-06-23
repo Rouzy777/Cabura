@@ -22,6 +22,7 @@
                 <input type="checkbox" v-model='agree'>
                 С правилами согласен
             </label>
+
             <button @click='submit' class='btn btn-success col-12 mt-3' name="button">Зарегистрироваться</button>
             <p class='mt-3'>
                 Уже есть аккаунт?
@@ -39,12 +40,19 @@ import messages from '@/utils/messages'
 
 export default {
     name: 'Login',
-    data: () => ({
-        email: '',
-        password: '',
-        name: '',
-        agree: false
-    }),
+    data() {
+        return {
+            email: '',
+            password: '',
+            name: '',
+            agree: false
+        }
+    },
+    metaInfo() {
+        return {
+            title: this.$title('Sign out')
+        }
+    },
     validations: {
         email: {
             email, required
@@ -66,6 +74,7 @@ export default {
     },
     watch: {
         error(fbError) {
+            console.log(fbError);
             alert(messages[fbError.code] || "что-то пошло не так");
         }
     },

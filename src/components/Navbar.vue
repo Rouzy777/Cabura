@@ -2,7 +2,7 @@
     <header>
         <nav class="navbar py-0 sticky-top bg-white border-bottom navbar-expand-lg navbar-light">
             <div class="container">
-                <a class="navbar-brand font-weight-bold" href="#">UpWin</a>
+                <a class="navbar-brand font-weight-bold" href="#">Cabura</a>
                 <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <router-link
