@@ -14,24 +14,29 @@ const router = new Router({
     routes: [
         {
             path: '/',
+            name: 'Dicer',
             meta: {auth: true},
             component: Dicer
         },
         {
             path: '/stats',
+            name: 'Статистика',
             meta: {auth: true},
             component: Stats
         },
         {
             path: '/signin',
+            name: 'Вход',
             component: Login
         },
         {
             path: '/signup',
+            name: 'Регистрация',
             component: Register
         },
         {
             path: "*",
+            name: '404',
             component: NotFound
         }
     ]

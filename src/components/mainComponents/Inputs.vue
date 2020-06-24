@@ -34,11 +34,6 @@ export default {
     },
     watch: {
         chance: function() { //генерация шанса и валидаторы
-            let newData = {
-                successValue: (this.sum * 100 / this.chance).toFixed(2),
-                minValue: this.chance != "" ? (this.chance * 10000 - 1).toFixed(0) : 0,
-                maxValue: this.chance != "" ? (999999 - (this.chance * 10000 - 1)).toFixed(0) : 999999
-            }
             this.chance > 95 ? this.chance = 95 : true;
             if(this.chance.length != 0) {
                 let str = String(this.chance);
@@ -49,13 +44,17 @@ export default {
                     }
                 }
             }
+
+            const newData = {
+                successValue: +(this.sum * 100 / this.chance).toFixed(2),
+                minValue: this.chance != "" ? +(this.chance * 10000 - 1).toFixed(0) : 0,
+                maxValue: this.chance != "" ? +(999999 - (this.chance * 10000 - 1)).toFixed(0) : 999999
+            }
+
             this.$store.commit('updateChance', this.chance);
             this.$emit('updateChance', newData);
         },
         sum: function() { //генерация суммы выигрыша и валидаторы
-            let newData = {
-                successValue: (this.sum * 100 / this.chance).toFixed(2)
-            }
             this.sum > 1000000 ? this.sum = 1000000 : true;
             if(this.sum.length != 0) {
                 let str = String(this.sum);
@@ -66,6 +65,11 @@ export default {
                     }
                 }
             }
+
+            let newData = {
+                successValue: +(this.sum * 100 / this.chance).toFixed(2)
+            }
+
             this.$store.commit('updateSum', this.sum);
             this.$emit('updateSum', newData);
         }

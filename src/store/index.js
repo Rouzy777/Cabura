@@ -15,13 +15,13 @@ export default new Vuex.Store({
     },
     mutations: {
         updateSum(state, newSum) {
-            state.sum = Number(newSum)
+            state.sum = +newSum
         },
         updateChance(state, newChance) {
-            state.chance = Number(newChance)
+            state.chance = +newChance
         },
         updateScore(state, newScore) {
-            state.score = Number(newScore)
+            state.score = +newScore
         },
         setError(state, error) {
             state.error = error

@@ -1,13 +1,11 @@
 <template>
-    <div>
-        <div v-if='!loading'>
-            <Navbar :nickname='name' activePage='play'/>
-            <Main/>
-        </div>
-        <div class='d-flex min-vh-100' v-else>
-            <div class="m-auto">
-                <Loader size='5rem'/>
-            </div>
+    <div v-if='!loading'>
+        <Navbar :nickname='name' activePage='play'/>
+        <Main/>
+    </div>
+    <div v-else class='d-flex min-vh-100'>
+        <div class="m-auto">
+            <Loader size='5rem'/>
         </div>
     </div>
 </template>
@@ -18,11 +16,6 @@ import Main from '@/components/Main'
 
 export default {
     name: 'Dicer',
-    metaInfo() {
-        return {
-            title: this.$title('Dicer')
-        }
-    },
     components: {
         Navbar, Main
     },

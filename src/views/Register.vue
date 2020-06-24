@@ -40,19 +40,12 @@ import messages from '@/utils/messages'
 
 export default {
     name: 'Login',
-    data() {
-        return {
-            email: '',
-            password: '',
-            name: '',
-            agree: false
-        }
-    },
-    metaInfo() {
-        return {
-            title: this.$title('Sign out')
-        }
-    },
+    data: () => ({
+        email: '',
+        password: '',
+        name: '',
+        agree: false
+    }),
     validations: {
         email: {
             email, required
@@ -74,7 +67,6 @@ export default {
     },
     watch: {
         error(fbError) {
-            console.log(fbError);
             alert(messages[fbError.code] || "что-то пошло не так");
         }
     },

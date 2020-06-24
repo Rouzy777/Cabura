@@ -30,17 +30,10 @@ import messages from '@/utils/messages'
 
 export default {
     name: 'Login',
-    metaInfo() {
-        return {
-            title: this.$title('Sign in')
-        }
-    },
-    data() {
-        return {
-            email: '',
-            password: ''
-        }
-    },
+    data: () => ({
+        email: '',
+        password: ''
+    }),
     validations: {
         email: {
             email, required
@@ -48,7 +41,7 @@ export default {
         password: {
             required
         }
-    },
+    }, 
     computed: {
         error() {
             return this.$store.getters.error
@@ -56,7 +49,6 @@ export default {
     },
     watch: {
         error(fbError) {
-            console.log(fbError);
             alert(messages[fbError.code] || "что-то пошло не так");
         }
     },

@@ -39,27 +39,29 @@
 <script>
 import Inputs from './mainComponents/Inputs'
 import History from './mainComponents/History'
+import { mapState } from 'vuex'
 
 export default {
     name: 'Main',
     components: {
         Inputs, History
     },
-    data() {
-        return {
-            successValue: 1.25, //шанс выигрыша
-            lastSuccessValue: 0, //последний выигрыш
-            lastNum: 0, //последнее выпавшее число
-            minValue: 799999, //мин. разброс генерации числа в инпуте
-            maxValue: 200000, //макс. разброс генерации числа в инпуте
-            success: false, //уведомление о победе
-            fail: false, //уведомление о проигрыше
-            warnings: [],
-            lastGames: [
-                {},{},{},{},{},{},{},{},{},{},{},{},{},{}
-            ]
-        }
-    },
+    data: () => ({
+        successValue: 1.25, //шанс выигрыша
+        lastSuccessValue: 0, //последний выигрыш
+        lastNum: 0, //последнее выпавшее число
+        minValue: 799999, //мин. разброс генерации числа в инпуте
+        maxValue: 200000, //макс. разброс генерации числа в инпуте
+        success: false, //уведомление о победе
+        warnings: [],
+        lastGames: [
+            {},{},{},{},{},{},{},{},{},{},{},{},{},{}
+        ]
+    }),
+    computed: mapState({
+        score: state => state.score,
+        sum: state => state.sum
+    }),
     methods: {
         updateSum: function(data) {
             this.successValue = data.successValue
@@ -75,27 +77,26 @@ export default {
         loadLastGame() {
             this.lastGames.unshift({
                 user: this.$store.getters.info.name,
-                sum: this.$store.state.sum,
-                coef: "x"+(this.successValue / this.$store.state.sum).toFixed(2),
-                result: this.fail ? 0 : this.lastSuccessValue,
-                color: this.fail ? "#000" : "#3bbc73",
+                sum: this.sum,
+                coef: "x"+(this.successValue / this.sum).toFixed(2),
+                result: !this.success ? 0 : this.lastSuccessValue,
+                color: !this.success ? "#000" : "#3bbc73",
                 show: true
             });
             this.lastGames.pop();
         },
         emptyWarnings() {
-            this.fail = false;
             this.success = false;
             this.warnings = [];
         },
         async playSmaller() { //игра "меньше"
             this.emptyWarnings();
-            if(this.$store.state.sum <= this.$store.state.score ) {
-                if(this.$store.state.sum >= 1) {
-                    var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
-                    this.$store.state.score -= this.$store.state.sum;
-                    if(num <= Number(this.minValue)) {
-                        Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
+            if(this.sum <= this.score ) {
+                if(this.sum >= 1) {
+                    const num = this.getRandomArbitrary(0, 1000000).toFixed(0);
+                    this.$store.state.score -= this.sum;
+                    if(num <= this.minValue) {
+                        Number(this.$store.state.score += this.successValue).toFixed(2);
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
                         this.warnings.push({
@@ -103,28 +104,20 @@ export default {
                             greenColor: true
                         });
                         this.loadLastGame();
-                        try {
-                            await this.$store.dispatch('updateBill', {
-                                bill: this.$store.state.score
-                            })
-                        } catch(e) {
-                            //continue regardless of error
-                        }
+                        await this.$store.dispatch('updateBill', {
+                            bill: this.score
+                        })
                     } else {
-                        this.fail = true;
+                        this.success = false;
                         this.lastNum = num;
                         this.warnings.push({
                             message: `Выпало ${this.lastNum}`,
                             greenColor: false
                         });
                         this.loadLastGame();
-                        try {
-                            await this.$store.dispatch('updateBill', {
-                                bill: this.$store.state.score
-                            })
-                        } catch(e) {
-                            //continue regardless of error
-                        }
+                        await this.$store.dispatch('updateBill', {
+                            bill: this.score
+                        })
                     }
                 } else {
                     this.warnings.push({
@@ -141,12 +134,12 @@ export default {
         },
         async playBigger() { //игра "больше"
             this.emptyWarnings();
-            if(this.$store.state.sum <= this.$store.state.score) {
-                if(this.$store.state.sum >= 1) {
-                    var num = this.getRandomArbitrary(0, 1000000).toFixed(0);
-                    this.$store.state.score -= this.$store.state.sum;
-                    if(num >= Number(this.maxValue)) {
-                        Number(this.$store.state.score += Number(this.successValue)).toFixed(2);
+            if(this.sum <= this.score) {
+                if(this.sum >= 1) {
+                    const num = this.getRandomArbitrary(0, 1000000).toFixed(0);
+                    this.$store.state.score -= this.sum;
+                    if(num >= this.maxValue) {
+                        Number(this.$store.state.score += this.successValue).toFixed(2);
                         this.success = true;
                         this.lastSuccessValue = this.successValue;
                         this.warnings.push({
@@ -154,28 +147,20 @@ export default {
                             greenColor: true
                         });
                         this.loadLastGame();
-                        try {
-                            await this.$store.dispatch('updateBill', {
-                                bill: this.$store.state.score
-                            })
-                        } catch(e) {
-                            //continue regardless of error
-                        }
+                        await this.$store.dispatch('updateBill', {
+                            bill: this.score
+                        })
                     } else {
-                        this.fail = true;
+                        this.success = false;
                         this.lastNum = num;
                         this.warnings.push({
                             message: `Выпало ${this.lastNum}`,
                             greenColor: false
                         });
                         this.loadLastGame();
-                        try {
-                            await this.$store.dispatch('updateBill', {
-                                bill: this.$store.state.score
-                            })
-                        } catch(e) {
-                            //continue regardless of error
-                        }
+                        await this.$store.dispatch('updateBill', {
+                            bill: this.score
+                        })
                     }
                 } else {
                     this.warnings.push({

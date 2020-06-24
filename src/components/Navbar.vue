@@ -2,7 +2,7 @@
     <header>
         <nav class="navbar py-0 sticky-top bg-white border-bottom navbar-expand-lg navbar-light">
             <div class="container">
-                <a class="navbar-brand font-weight-bold" href="#">Cabura</a>
+                <a class="navbar-brand font-weight-bold" href="#">UpWin</a>
                 <div class="collapse navbar-collapse ml-4" id="navbarTogglerDemo02">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <router-link
@@ -71,7 +71,7 @@
                         <h5><IOdometer class="iOdometer" :value="Number($store.state.score)"/></h5>
                     </div>
                 </div>
-                <svg viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4'>
+                <svg data-toggle="modal" data-target="#settings" viewBox="0 0 24 24" width="15" height="15" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class='ml-1 mr-4 pointer'>
                     <polyline points="6 9 12 15 18 9"></polyline>
                 </svg>
             </div>
@@ -107,13 +107,9 @@ export default {
     methods: {
         async getNumber(num) {
             this.$store.state.score = Number(num) + Number(this.$store.state.score);
-            try {
-                await this.$store.dispatch('updateBill', {
-                    bill: this.$store.state.score
-                })
-            } catch(e) {
-                //continue regardless of error
-            }
+            await this.$store.dispatch('updateBill', {
+                bill: this.$store.state.score
+            })
         },
         async logout() {
             this.$router.push('/signin?message=logout');
