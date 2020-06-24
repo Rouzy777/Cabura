@@ -66,7 +66,7 @@ export default {
                 }
             }
 
-            let newData = {
+            const newData = {
                 successValue: +(this.sum * 100 / this.chance).toFixed(2)
             }
 
